@@ -1,0 +1,154 @@
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+
+{% extends './Base.html' %}
+{%load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <style>
+    #toaster {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+    }
+  </style>
+  <body>
+    <script>
+      function showToaster(message) {
+        var toaster = document.getElementById("toaster");
+        toaster.innerHTML = message;
+        toaster.style.display = "block";
+        setTimeout(function () {
+          toaster.style.display = "none";
+        }, 1800); // hide after 5 seconds
+      }
+    </script>
+      </h1>
+       <script type="text/javascript">
+        function myFunction() {
+          var input = document.getElementById("myInput").value;
+          console.log(input);
+          $.ajax({
+            type: "GET",
+            url: "/project/project_module_list/"
+            data:{
+              'input':input
+            }
+          
+          });
+          
+        }
+  
+      </script>
+      <script type="text/javascript">
+        function DeleteData(id) {
+          if (confirm("Are you sure you want to delete?")) {
+            $.ajax({
+              type: "GET",
+              url: "/project/modules_delete/" + id,
+              success: function (data) {
+                console.log(data);
+
+                //alert("Deleted successfully");
+                showToaster("Deleted successfully");
+                setTimeout(() => {
+                  location.reload();
+                }, 1000);
+              },
+              error: function (data) {
+              showToaster("Deleted successfully");
+                setTimeout(() => {
+                  location.reload();
+                }, 1000);
+              },
+            });
+          }
+        }
+      </script>
+    {% block content %}
+    <br>
+    <br>
+    <h2><strong><center>PROJECT MODULE</center></strong></h2>
+    <br>
+    <br>
+    {% comment %} <a href="{% url 'create_project_module' %}" class="btn btn-primary">Add Task</a> {% endcomment %}
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+          <br>
+          <thead>
+            <tr>
+              <th>MODULE NAME</th>
+              <th>DESCRIPTION</th>
+              <th>STATUS</th>
+              <th>HOURS</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0">
+            
+            {% for module in project_module_list %}
+            <tr>
+              <td>
+                <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                <strong>{{module.moduleName}}</strong>
+              </td>
+              <td>{{module.description}}</td>
+               <td>{{module.status}}</td></span>
+              <td>{{module.estimeted_hours}}</td>
+              <td>
+                <div class="dropdown">
+                 {% comment %} <a class="dropdown-item" href="{% url 'modules_update' module.id %}" style="color:#4B49AC;"><i class="ti-pencil-alt"></i> Edit</a> {% endcomment %}
+
+                 
+                    <a class="dropdown-item" href="{% url 'modules_update' module.id %}"> 
+                    <button id="edit" class="btn btn-purple btn-mid " type="submit"
+                      class="button__icon">
+		                	<ion-icon name="create-outline"></ion-icon>
+		                  EDIT
+                     </button>   
+                   </a> 
+                   {% comment %} <a class="dropdown-item" href="{% url 'modules_delete' module.id %}">
+                    <button id="edit" class="btn btn-danger btn-sm" type="submit">DELETE</button> {% endcomment %}
+                    <a class="dropdown-item"> 
+                      
+                    <button id="edit" class="btn btn-purple btn-mid" onclick = "DeleteData({{module.id}})"
+                       class="button__icon">
+		                	  <ion-icon name="trash-outline"></ion-icon>
+                    DELETE</button> 
+                     
+                  <a class="dropdown-item" href="{% url 'project_module_detail' module.id %}">
+                    <button id="edit" class="btn btn-purple btn-mid" type="submit"
+                       class="button__icon">
+                      <ion-icon name="book-outline"></ion-icon>  
+                    DETAIL</button> 
+                </div>
+              </td>
+              
+            </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    {% endblock content %}
+        
+    
+</body>
+</html>

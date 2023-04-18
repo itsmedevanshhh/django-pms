@@ -1,0 +1,96 @@
+{% extends './Base.html' %} 
+{%load crispy_forms_tags %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+      <!--/ Order Statistics -->
+      <div class="col-lg-10 col-md-12 col-6 mb-15">
+        <br>
+        <br>
+        <br>
+        <br>
+          <div class="card">
+          <br>
+          <br>
+          <h2><center>PROJECT TASK</center></h2>
+          <div class="card-body">
+          <a class="btn btn-primary" href="{% url 'create_project_task' %}">ADD NEW TASKS</a> 
+          <br>
+          <br>
+          <br>
+            {% comment %} <table class="table">
+              <thead>
+                <tr>
+                  <th>TEAM NAME</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody class="table-border-bottom-0">
+                {% for team in team %}
+                <tr>
+                  <td>
+                    <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                    <strong>{{team.task_title}}</strong> 
+                     
+                  </td>
+                  <td><span class="badge bg-label-primary me-1">{{team.status}}</span></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table> {% endcomment %}
+            {% comment %} <table class="table">
+              <thead>
+                <tr>
+                  <th>MODULE NAME</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody class="table-border-bottom-0">
+                {% for module in module %}
+                <tr>
+                  <td>
+                    <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                    <strong>{{module.task_title}}</strong> 
+                     
+                  </td>
+                  <td><span class="badge bg-label-primary me-1">{{module.status}}</span></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table> {% endcomment %}
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>TASK NAME</th>
+                  <th>STATUS</th>
+                  {% comment %} <th>ACTION</th> {% endcomment %}
+                </tr>
+              </thead>
+              <tbody class="table-border-bottom-0">
+                {% for project_task in project_task %}
+                <tr>
+                  <td>
+                    <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                    <strong>{{project_task.task_title}}</strong> 
+                     
+                  </td>
+                  <td><span class="badge bg-label-primary me-1">{{project_task.status}}</span></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+{% endblock content %}

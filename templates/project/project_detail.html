@@ -1,0 +1,197 @@
+{% extends './Base.html' %} 
+{%load crispy_forms_tags %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  
+  </head>
+  <body>
+  <script>
+                  var config = {
+                    type: 'line',
+                    data: {
+                      datasets: [{
+                        data: {{ data|safe }},
+                        backgroundColor: [
+                           '#0047AB	', '#D22B2B', '#0047AB	', '#D22B2B', '#0047AB	', '#D22B2B'
+                        ],
+                        label: 'Projects & Estimated Hours'
+                      }],
+                      labels: {{ labels|safe }}
+                    },
+                    options: {
+                       maintainAspectRatio: false,
+                      responsive: true,
+                      width: 800,
+                      height: 600
+                    }
+                  };
+              
+                  window.onload = function() {
+                    var ctx = document.getElementById('pie-chart').getContext('2d');
+                    window.myPie = new Chart(ctx, config);
+                  };
+              
+        </script>
+     
+
+    <div class="row">
+      <!-- Order Statistics -->
+      
+      <div class="col-md-6 col-lg-4 col-xl-10 order-0 mb-4">
+        <br>
+        <br>
+        
+        <div class="card h-100">
+          <div
+            class="card-header d-flex align-items-center justify-content-between pb-0"
+          >
+            <div class="card-title mb-0">
+              <h5 class="m-0 me-2">{{project_detail.title}}</h5>
+              <small class="text-muted"
+                >{{project_detail.estimated_time}}</small
+              >
+            </div>
+            <div class="dropdown">
+              <button
+                class="btn p-0"
+                type="button"
+                id="orederStatistics"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="bx bx-dots-vertical-rounded"></i>
+              </button>
+              <div
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="orederStatistics"
+              >
+                <a class="dropdown-item" href="javascript:void(0);"
+                  >Select All</a
+                >
+                <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                <a class="dropdown-item" href="javascript:void(0);">Share</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div
+              class="d-flex justify-content-between align-items-center mb-3"
+              style="position: relative"
+            >
+              <div class="d-flex flex-column align-items-center gap-1">
+                START DATE
+                <h2 class="mb-2">{{project_detail.start_date}}</h2>
+              </div>
+        <div height="200" width="200">
+            <canvas id="pie-chart" style="height:200px,width:200px"></canvas>
+         </div>
+              <div class="resize-triggers">
+                <div class="expand-trigger">
+                  <div style="width: 338px; height: 139px"></div>
+                </div>
+                <div class="contract-trigger"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/ Order Statistics -->
+     <br>
+     <br>
+      <div class="col-lg-10 col-md-12 col-6 mb-15">
+        <br>
+        <br>
+        <br>
+        <br>
+          <div class="card">
+          <br>
+          <br>
+          <h2><center>PROJECT MODULES</center></h2>
+          <div class="card-body">
+          <a class="btn btn-primary" href="{% url 'create_project_module' %}">ADD NEW MODULES</a> 
+            {% comment %} {{module}} {% endcomment %}
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>MODULE NAME</th>
+                  <th>STATUS</th>
+                  {% comment %} <th>ACTION</th> {% endcomment %}
+                </tr>
+              </thead>
+              <tbody class="table-border-bottom-0">
+                {% for m in module %}
+                
+
+                
+                <tr>
+                  <td>
+                    <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                    <strong>{{m.moduleName}}</strong> 
+                     
+                  </td>
+                  <td><span class="badge bg-label-primary me-1">{{m.status}}</span></td>
+                  <td>
+                   <div class="dropdown">
+                    {% comment %} <td>
+                    <a class="btn btn-primary" href="{% url 'create_project_module' %}">ADD NEW MODULES</a> 
+                  </td> {% endcomment %}
+                </tr>
+    
+                {% endfor %}
+              </tbody>
+            </table>
+             <a class="btn btn-warning btn-sm"href ="{% url 'project_module_list' %}">SEE ALL</a>
+
+         
+        </div>
+        
+        <div class="card">
+          <br>
+          <br>
+          <h2><center>PROJECT TEAM</center></h2>
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>TEAM MEMBER NAME</th>
+                  {% comment %} <th>STATUS</th> {% endcomment %}
+                  {% comment %} <th>ACTION</th> {% endcomment %}
+                </tr>
+              </thead>
+              <tbody class="table-border-bottom-0">
+                {% for t in team %}
+                
+                <tr>
+                  <td>
+                    <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                    <strong>{{t.user.username}}</strong> 
+                     
+                  </td>
+                  {% comment %} <td><span class="badge bg-label-primary me-1">{{t.status}}</span></td> {% endcomment %}
+                
+                  {% comment %} <td>
+                    <a class="btn btn-primary" href="{% url 'create_project_module' %}">ADD NEW MODULES</a> 
+                  </td> {% endcomment %}
+                </tr>
+    
+                {% endfor %}
+              </tbody>
+            </table>
+         
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+{% endblock content %}

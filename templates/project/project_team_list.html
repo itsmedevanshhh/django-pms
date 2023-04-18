@@ -1,0 +1,124 @@
+{% extends './Base.html' %}
+    {% block content %}
+
+{% load static %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <style>
+    #toaster {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+    }
+  </style>
+  <body>
+    <script>
+      function showToaster(message) {
+        var toaster = document.getElementById("toaster");
+        toaster.innerHTML = message;
+        toaster.style.display = "block";
+        setTimeout(function () {
+          toaster.style.display = "none";
+        }, 600); // hide after 5 seconds
+      }
+    </script>
+    <div id ="toaster"></div>
+       <script type="text/javascript">
+        function myFunction() {
+          var input = document.getElementById("myInput").value;
+          console.log(input);
+          $.ajax({
+            type: "GET",
+            url: "/user/managerpage/",
+            data:{
+              'input':input
+            }
+          });
+          
+        }
+  
+      </script>
+      <script type="text/javascript">
+        function DeleteTeam(id) {
+          console.log(id)
+          if (confirm("Are you sure you want to delete?")) {
+            $.ajax({
+              type: "GET",
+              url: "/project/delete_team/" + id,
+              success: function (data) {
+                console.log(data);
+
+                //alert("Deleted successfully");
+                showToaster("Deleted successfully");
+                setTimeout(() => {
+                  location.reload();
+                }, 700);
+              },
+              error: function (data) {
+              showToaster("Deleted successfully");
+                setTimeout(() => {
+                  location.reload();
+                }, 1000);
+              },
+            });
+          }
+        }
+      </script>
+    <br>
+    <br>
+    <h1><center><strong>Project Team</center></strong></h1> 
+    <h1 class="card-header">
+      <a class="btn btn-primary" href="{% url 'create_project_team' %}">ADD PROJECT TEAM</a>
+    </h1>
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>TEAM</th>
+              <th>USER</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0">
+            
+          {% for team in project_team_list %}
+
+            <tr>
+              {% comment %} <td>{{team.id}}</td> {% endcomment %}
+              <td>{{team.Project}}</td>
+              <td>{{team.user}}</td>
+              <td class="dropdown">
+                   {% comment %} <a class="dropdown-item" href="{% url 'delete_team' team.id %}">
+                    <button id="edit" class="btn btn-danger btn-sm" type="submit">DELETE</button>
+                    {% endcomment %}
+                    
+                   <button id="edit" class="btn btn-danger btn-sm" onclick = "DeleteTeam({{team.id}})">DELETE</button>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      
+
+        
+    
+</body>
+</html>
+    {% endblock content %}
